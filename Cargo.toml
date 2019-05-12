@@ -2,7 +2,7 @@
 name = "robot36-encoder"
 version = "0.1.0"
 authors = ["killertux <bruno.canguru@hotmail.com>"]
-readme = "README.md"
+readme = "readme.md"
 keywords = ["robot36", "sstv"]
 categories = ["encoding", "multimedia"]
 license = "MIT"
