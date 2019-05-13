@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["killertux <bruno.canguru@hotmail.com>"]
 readme = "readme.md"
 repository = "https://github.com/killertux/robot36-encoder"
+description = "Library to convert images into audio using the robot 36 encoding"
 keywords = ["robot36", "sstv"]
 categories = ["encoding", "multimedia"]
 license = "MIT"
