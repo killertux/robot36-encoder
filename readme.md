@@ -8,7 +8,7 @@ Bear in mind that this is still on the 0.1 version so breaking changes may and p
 
 ## Example using Hound
 
-'''rust
+```rust
 extern crate robot36-encoder;
 
 use std::env;
@@ -33,4 +33,4 @@ fn main() {
         writer.write_sample(*sample).unwrap();
     }
 }
-'''
+```
