@@ -124,6 +124,10 @@ fn yuv_clamp(x: f32) -> u8 {
 }
 
 macro_rules! impl_traits {
+    ($i:ident, $($is:ident),+) => {
+        impl_traits!($i);
+        impl_traits!($($is),+);
+    };
     ($i:ident) => {
         impl From<&$i> for u16 {
             fn from(value: &$i) -> u16 {
@@ -143,9 +147,4 @@ macro_rules! impl_traits {
     };
 }
 
-impl_traits!(R);
-impl_traits!(G);
-impl_traits!(B);
-impl_traits!(Y);
-impl_traits!(U);
-impl_traits!(V);
+impl_traits!(R, G, B, Y, U, V);

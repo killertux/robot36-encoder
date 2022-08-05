@@ -1,6 +1,6 @@
 [package]
 name = "robot36-encoder"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["killertux <bruno.canguru@hotmail.com>"]
 readme = "readme.md"
 repository = "https://github.com/killertux/robot36-encoder"
