@@ -7,7 +7,7 @@ const IMAGE_SIZE: usize = IMAGE_WIDTH * IMAGE_HEIGHT;
 #[derive(Error, Debug)]
 pub enum ImageCreationError {
     #[error("Invalid image size {0}. Should be {1}")]
-    InvalidVectorSize(usize, usize),
+    VectorSize(usize, usize),
     #[error("Invalid width {0}. Should be {1}")]
     InvalidWidth(usize, usize),
     #[error("Invalid height {0}. Should be {1}")]
@@ -29,13 +29,13 @@ impl Robot36Image {
     /// Creates a Robot36Image from a RGB8 vec.
     pub fn from_rgb8_vec(vec: Vec<(R, G, B)>) -> Result<Self, ImageCreationError> {
         if vec.len() != IMAGE_SIZE {
-            return Err(ImageCreationError::InvalidVectorSize(vec.len(), IMAGE_SIZE));
+            return Err(ImageCreationError::VectorSize(vec.len(), IMAGE_SIZE));
         }
         let mut data: Vec<Vec<(Y, U, V)>> = vec![];
-        for i in 0..vec.len() {
+        for (i, rgb) in vec.into_iter().enumerate() {
             match data.get_mut(i / IMAGE_WIDTH) {
-                Some(line) => line.push(to_yuv(&vec[i])),
-                None => data.push(vec![to_yuv(&vec[i])]),
+                Some(line) => line.push(to_yuv(rgb)),
+                None => data.push(vec![to_yuv(rgb)]),
             }
         }
         Ok(Self { data })
@@ -92,7 +92,7 @@ impl Robot36Image {
     }
 }
 
-fn to_yuv(rgb: &(R, G, B)) -> (Y, U, V) {
+fn to_yuv(rgb: (R, G, B)) -> (Y, U, V) {
     (
         y_rgb(rgb.0 .0, rgb.1 .0, rgb.2 .0).into(),
         u_rgb(rgb.0 .0, rgb.1 .0, rgb.2 .0).into(),

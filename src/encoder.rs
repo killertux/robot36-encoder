@@ -27,7 +27,7 @@ impl Encoder {
     pub fn new(image: Robot36Image, rate: u64) -> Self {
         Encoder {
             image,
-            rate: rate,
+            rate,
             y_ticks: (rate as f64 * Y_SECS) as u64,
             uv_ticks: (rate as f64 * UV_SECS) as u64,
             sync_porch_ticks: (rate as f64 * SYNC_PORCH_SECS) as u64,
@@ -39,14 +39,14 @@ impl Encoder {
 
     /// Encodes the image into an iterator of i16. Where each number is
     /// a audio sample.
-    pub fn encode<'a>(&'a self) -> impl Iterator<Item = i16> + 'a {
+    pub fn encode(&self) -> impl Iterator<Item = i16> + '_ {
         Signal::new(
             ComplexOscilator::new(self.rate),
             self.vis_header().chain(self.codificated_image()),
         )
     }
 
-    fn vis_header<'a>(&'a self) -> impl Iterator<Item = f64> + 'a {
+    fn vis_header(&self) -> impl Iterator<Item = f64> + '_ {
         let header_frequencies: Vec<(f64, f64)> = vec![
             (self.rate as f64 * 0.3, 0.0),
             (1900.0, 0.3),
@@ -68,7 +68,7 @@ impl Encoder {
         })
     }
 
-    fn codificated_image<'a>(&'a self) -> impl Iterator<Item = f64> + 'a {
+    fn codificated_image(&self) -> impl Iterator<Item = f64> + '_ {
         (0..self.image.get_height()).step_by(2).flat_map(|y| {
             get_frequency_iter(self.horizontal_sync_ticks, 1200.0)
                 .chain(get_frequency_iter(self.sync_porch_ticks, 1500.0))
@@ -85,14 +85,14 @@ impl Encoder {
         })
     }
 
-    fn add_y_scan<'a>(&'a self, y: usize) -> impl Iterator<Item = f64> + 'a {
+    fn add_y_scan(&self, y: usize) -> impl Iterator<Item = f64> + '_ {
         (0..self.y_ticks).map(move |tick| {
             let x = self.get_x_position(tick, self.y_ticks);
             1500.0 + 800.0 * f64::from(self.image.get_y(x, y)) / 255.0
         })
     }
 
-    fn add_v_scan<'a>(&'a self, y: usize) -> impl Iterator<Item = f64> + 'a {
+    fn add_v_scan(&self, y: usize) -> impl Iterator<Item = f64> + '_ {
         (0..self.uv_ticks).map(move |tick| {
             let x0 = self.get_x_position(tick, self.uv_ticks);
             let x1 = (x0 + 1).max(self.image.get_width() - 1);
@@ -102,7 +102,7 @@ impl Encoder {
         })
     }
 
-    fn add_u_scan<'a>(&'a self, y: usize) -> impl Iterator<Item = f64> + 'a {
+    fn add_u_scan(&self, y: usize) -> impl Iterator<Item = f64> + '_ {
         (0..self.uv_ticks).map(move |tick| {
             let x0 = self.get_x_position(tick, self.uv_ticks);
             let x1 = (x0 + 1).max(self.image.get_width() - 1);
@@ -156,7 +156,7 @@ where
     pub fn new(complex_oscilator: ComplexOscilator, frequencies: T) -> Self {
         Self {
             complex_oscilator,
-            frequencies: frequencies,
+            frequencies,
         }
     }
 }
