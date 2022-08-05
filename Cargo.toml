@@ -1,6 +1,6 @@
 [package]
 name = "robot36-encoder"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["killertux <bruno.canguru@hotmail.com>"]
 readme = "readme.md"
 repository = "https://github.com/killertux/robot36-encoder"
@@ -8,11 +8,18 @@ description = "Library to convert images into audio using the robot 36 encoding"
 keywords = ["robot36", "sstv"]
 categories = ["encoding", "multimedia"]
 license = "MIT"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-image = "0.21"
-num = "0.2"
+num-complex = "0.4.2"
+image = { version = "0.24", optional = true }
+thiserror = "1"
 
 [dev-dependencies]
 hound = "3.4.0"
+image = "0.24"
+
+[[example]]
+name = "encode-cli"
+required-features = ["image"]
+
